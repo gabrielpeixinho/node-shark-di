@@ -6,6 +6,10 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha"
   },
+  "repository":{
+    "type": "git",
+    "url": "https://github.com/gabrielpeixinho/node-shark-di.git"
+  },
   "keywords": [
     "DI",
     "dependency-injection",
