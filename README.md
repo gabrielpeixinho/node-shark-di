@@ -2,7 +2,8 @@
 Easy to use DI container for node.
 
 ## First: Create a shark-di module
-    // my-module.js
+```javascript 
+   // my-module.js
     const di = require('shark-di');
     const Module = di.Module;
 
@@ -27,8 +28,9 @@ Easy to use DI container for node.
     });
 
     exports = module.exports = main;
-
+```
 ## Second: Create a shark-di Container and load your Modules
+```javascript 
     // di.js
     const Container = require('shark-di').Container;
     const mainModule = require('./my-module.js');
@@ -38,8 +40,9 @@ Easy to use DI container for node.
     container.load([mainModule]);
 
     exports = module.exports = container;
-
+```
 ## Third: Require your container
+```javascript 
     // index.js
     const container = require('./di.js');
 
@@ -49,3 +52,4 @@ Easy to use DI container for node.
         console.log(repository(0));
 
     });
+```
