@@ -1,0 +1,20 @@
+{
+  "name": "node-shark-di",
+  "version": "0.1.0",
+  "description": "easy to use DI container",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha"
+  },
+  "keywords": [
+    "DI",
+    "dependency-injection",
+    "IoC",
+    "inversion-of-control"
+  ],
+  "author": "Gabriel Lima Peixinho",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^3.2.0"
+  }
+}
