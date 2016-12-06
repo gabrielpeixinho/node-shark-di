@@ -69,7 +69,7 @@ Container.prototype = {
 }
 
 
-module.exports = {
+exports = module.exports = {
    Module: Module,
    Container: Container
 }

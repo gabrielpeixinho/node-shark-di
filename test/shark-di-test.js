@@ -32,7 +32,7 @@ describe('shark-di tests', function(){
       container.load([mainModule]);
 
 
-      container.get(function(game){
+      container.get(function(err, game){
       
           try{
              assert.equal(100, game());
