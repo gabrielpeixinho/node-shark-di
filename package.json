@@ -1,5 +1,5 @@
 {
-  "name": "node-shark-di",
+  "name": "shark-di",
   "version": "0.1.0",
   "description": "easy to use DI container",
   "main": "index.js",
@@ -12,7 +12,7 @@
     "IoC",
     "inversion-of-control"
   ],
-  "author": "Gabriel Lima Peixinho",
+  "author": "Gabriel Lima Peixinho <gabriel.peixinho@chmod666.com.br> (http://example.com)",
   "license": "MIT",
   "devDependencies": {
     "mocha": "^3.2.0"
