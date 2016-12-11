@@ -53,3 +53,29 @@ Easy to use DI container for node.
 
     });
 ```
+
+## Promise based factories
+Just return a [promise/A+](https://promisesaplus.com/) in your factory.
+
+```javascript
+ 
+    main.bind('db', function(){
+
+        return promise_a_plus;
+
+    });
+```
+
+Sample using RSVP Promise/A+ Library
+```javascript
+    
+    const RSVP = require('rsvp');
+    
+    main.bind('db', function(){
+
+        return new RSVP.Promise(function(resolve, reject){
+             resolve({name: 'white shark'}); 
+        });
+
+    });
+ ```
