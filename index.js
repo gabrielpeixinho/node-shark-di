@@ -1,4 +1,5 @@
 const getParameterNames = require('get-parameter-names');
+const RSVP = require('rsvp');
 
 function Module(){
    this.binds = {};
@@ -36,9 +37,11 @@ Container.prototype = {
    
       var factory = callback;
 
-      var injections = this.resolve(factory);
+      this.resolve(factory)
+          .then(function(injections){
+               callback.apply(null, injections);
+          });
 
-      callback.apply(null, injections);
    
    },
 
@@ -54,17 +57,31 @@ Container.prototype = {
          var value = null;
 
          if(bind != null){
-             var $paramNames = getParameterNames(bind); 
-             var $injections = $paramNames.length > 0 ? this.resolve(bind) : [];
 
-             value = bind.apply(null, $injections);
+             var $injections = this.resolve(bind);
+
+
+             value = $injections.then(function(injections){
+                return bind.apply(null, injections);
+             });
+                
          } 
 
-         injections.push(value);
+         var promise = value != null && typeof(value.then) == 'function' ? value : this.wrapInPromise(value);
+
+         injections.push(promise);
 
       }
 
-      return injections;
+      var injectionsPromise = RSVP.all(injections);
+
+      return injectionsPromise
+   },
+
+   wrapInPromise: function(value){
+       return new Promise(function(resolve, reject){
+           resolve(value); 
+       });
    }
 }
 

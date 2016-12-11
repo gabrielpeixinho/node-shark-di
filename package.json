@@ -6,7 +6,7 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha"
   },
-  "repository":{
+  "repository": {
     "type": "git",
     "url": "https://github.com/gabrielpeixinho/node-shark-di.git"
   },
@@ -22,6 +22,7 @@
     "mocha": "^3.2.0"
   },
   "dependencies": {
-    "get-parameter-names": "^0.3.0"
+    "get-parameter-names": "^0.3.0",
+    "rsvp": "^3.3.3"
   }
 }
