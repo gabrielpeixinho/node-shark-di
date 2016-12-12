@@ -1,6 +1,7 @@
 const getParameterNames = require('get-parameter-names');
 const RSVP = require('rsvp');
 
+
 function Module(){
    this.binds = {};
 }
@@ -40,6 +41,9 @@ Container.prototype = {
       this.resolve(factory)
           .then(function(injections){
                callback.apply(null, injections);
+          })
+          .catch(function(error){
+               callback.apply(null, [error]);
           });
 
    

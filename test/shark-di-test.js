@@ -97,6 +97,86 @@ describe('shark-di tests', function(){
 
 
 
+   it('should fill "err" parameter when factory throws an exception.', function(done){
+   
+
+      var mainModule = new Module();
+
+      mainModule.bind('dice', function(){
+         throw new Error('Error at creating dice.');
+      });
+
+      mainModule.bind('game', function(dice){
+      
+          return function(){
+              return dice()*10; 
+          }
+      });
+   
+      var container = new Container();
+
+      container.load([mainModule]);
+
+
+      container.get(function(err, game){
+      
+         try{
+          assert.ok(err);
+          assert.ok(err instanceof Error);
+          assert.equal(err.message, 'Error at creating dice.');
+          done();
+         }
+         catch(ex){
+            done(ex);
+         }
+
+      });
+
+
+   });
+
+
+   it('should fill "err" parameter when promised reject.', function(done){
+   
+
+      var mainModule = new Module();
+
+      mainModule.bind('dice', function(){
+         return new Promise(function(resolve, reject){
+              reject(new Error('Error at creating dice.'));
+         });
+      });
+
+      mainModule.bind('game', function(dice){
+      
+          return function(){
+              return dice()*10; 
+          }
+      });
+   
+      var container = new Container();
+
+      container.load([mainModule]);
+
+
+      container.get(function(err, game){
+      
+         try{
+          assert.ok(err);
+          assert.ok(err instanceof Error);
+          assert.equal(err.message, 'Error at creating dice.');
+          done();
+         
+         }
+         catch(ex){
+            done(ex);
+         }
+
+      });
+
+
+   });
+
 });
 
 
