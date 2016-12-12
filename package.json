@@ -1,6 +1,6 @@
 {
   "name": "shark-di",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "easy to use DI container",
   "main": "index.js",
   "scripts": {
