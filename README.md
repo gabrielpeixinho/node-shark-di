@@ -54,6 +54,27 @@ Easy to use DI container for node.
     });
 ```
 
+## Bind class
+
+```javascript 
+
+    function Repository(db){
+        this.db = db; 
+    }
+
+    Repository.prototype = {
+       get: function(id){
+         var db = this.db; 
+         var data = db();
+         data.id = id;
+         return data;
+       } 
+    }
+
+    main.bindClass('repository', Repository);
+
+```
+
 ## Promise based factories
 Just return a [promise/A+](https://promisesaplus.com/) in your factory.
 

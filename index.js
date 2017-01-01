@@ -11,6 +11,22 @@ Module.prototype = {
     bind: function(paramName, factory){
 
        this.binds[paramName] = factory;
+
+    },
+
+    bindClass: function(paramName, ctor){
+         
+       var paramNames = getParameterNames(ctor);
+       var paramList = paramNames.join();
+
+       eval(['var f=function('+paramList+'){',
+             ' return new ctor('+paramList+');', 
+             '}'].join('\n')) ;
+
+       var ctorWraperFactory = f;
+       
+       this.binds[paramName] = ctorWraperFactory;
+
     }
 }
 

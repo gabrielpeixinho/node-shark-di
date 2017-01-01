@@ -177,6 +177,55 @@ describe('shark-di tests', function(){
 
    });
 
+
+   it('should resolve bind to a class (constructor)', function(done){
+   
+
+      var mainModule = new Module();
+
+      mainModule.bind('dice', function(){
+
+          var dice = function(){
+             return 10; 
+          }
+
+          return dice;
+          
+      });
+
+      var gameClass = function(dice){
+      
+          this.dice = dice;
+          this.play = function(){
+              return this.dice()*10; 
+          };
+
+      };
+
+      mainModule.bindClass('game', gameClass);
+   
+      var container = new Container();
+
+      container.load([mainModule]);
+
+
+      container.get(function(err, game){
+      
+          try{
+             assert.equal(100, game.play());
+             assert.ok(game instanceof gameClass);
+             assert.ok(game.constructor === gameClass);
+             done();
+          }
+          catch(ex){
+          
+             done(ex);
+          }
+      });
+
+
+   })
+
 });
 
 
