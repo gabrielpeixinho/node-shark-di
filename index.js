@@ -121,5 +121,6 @@ Container.prototype = {
 
 exports = module.exports = {
    Module: Module,
-   Container: Container
+   Container: Container,
+   BootstrapContainer : new Container()
 }
