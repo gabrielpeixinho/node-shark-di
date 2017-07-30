@@ -27,24 +27,38 @@ Module.prototype = {
        
        this.binds[paramName] = ctorWraperFactory;
 
+    },
+    getBinds(){
+        return this.binds;
     }
 }
 
 
 function Container(){
-   this.binds = {};
+   this.module = new Module();
 }
 
 Container.prototype = {
+   getBinds: function(){
+       return this.module.getBinds();
+   },
+
+   bind: function (paramName, factory) {
+       this.module.bind(paramName, factory);
+   },
+
+   bindClass: function (paramName, ctor) {
+       this.module.bindClass(paramName, ctor);
+   },
 
    load: function(modules){
 
-
       for(var i=0; i < modules.length; i++){
-         var m = modules[i];
-      
-         for(p in m.binds){
-            this.binds[p] = m.binds[p];
+         var module = modules[i];
+         var moduleBinds = module.getBinds();
+
+         for(p in moduleBinds){
+            this.bind(p, moduleBinds[p]);
          }
       }
    
@@ -68,7 +82,7 @@ Container.prototype = {
 
       for(var i=0; i < dependencies.length; i++){
          var dependency = dependencies[i]; 
-         var dependencyBind = this.binds[dependency];
+         var dependencyBind = this.getBinds()[dependency];
          var dependencyResolution = null;
 
 
