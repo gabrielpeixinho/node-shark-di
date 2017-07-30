@@ -55,45 +55,44 @@ Container.prototype = {
       var factory = callback;
 
       this.resolve(factory)
-          .then(function(injections){
-               callback.apply(null, injections);
-          })
           .catch(function(error){
                callback.apply(null, [error]);
           });
 
-   
    },
 
    resolve: function(factory){
-
       var injections = [];
-      var paramNames = getParameterNames(factory);
-   
-
-      for(var i=0; i < paramNames.length; i++){
-         var param = paramNames[i]; 
-         var bind = this.binds[param];
-         var value = null;
-
-         if(bind != null){
-
-             var $injections = this.resolve(bind);
+      var dependencies = getParameterNames(factory);
 
 
-             value = $injections.then(function(injections){
-                return bind.apply(null, injections);
-             });
-                
+      for(var i=0; i < dependencies.length; i++){
+         var dependency = dependencies[i]; 
+         var dependencyBind = this.binds[dependency];
+         var dependencyResolution = null;
+
+
+         if(dependencyBind != null){
+             dependencyResolution = this.resolve(dependencyBind);
          } 
 
-         var promise = value != null && typeof(value.then) == 'function' ? value : this.wrapInPromise(value);
+         var dependencyResolutionIsAPromise = dependencyResolution != null 
+                                              && typeof(dependencyResolution.then) == 'function';
 
-         injections.push(promise);
+         var dependencyResolutionPromise = dependencyResolutionIsAPromise ? 
+                                           dependencyResolution : 
+                                           this.wrapInPromise(dependencyResolution);
+
+         injections.push(dependencyResolutionPromise);
 
       }
 
-      var injectionsPromise = RSVP.all(injections);
+
+      var injectionsPromise = RSVP.all(injections).then(function(i){
+
+           return factory.apply(null, i);
+
+      });
 
       return injectionsPromise
    },

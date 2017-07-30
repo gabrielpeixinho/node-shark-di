@@ -7,6 +7,7 @@ const Module = di.Module;
 const Container = di.Container;
 
 
+
 describe('shark-di tests', function(){
 
 
@@ -49,6 +50,99 @@ describe('shark-di tests', function(){
 
    });
 
+
+   it('should resolve bind factory with two parameters', function(done){
+   
+
+      var mainModule = new Module();
+      var objectA = {info: 'objectA'};
+      var objectB = {info: 'objectB'};
+
+      mainModule.bind('a', function(){ return  objectA; });
+      mainModule.bind('b', function(){ return  objectB; });
+   
+      var container = new Container();
+
+      container.load([mainModule]);
+
+      container.get(function(err, a, b){
+      
+          try{
+             assert.equal(a, objectA);
+             assert.equal(b, objectB);
+             done();
+          }
+          catch(ex){
+          
+             done(ex);
+          }
+      });
+
+
+   });
+
+   it('should resolve bind factory with three parameters', function(done){
+   
+
+      var mainModule = new Module();
+      var objectA = {info: 'objectA'};
+      var objectB = {info: 'objectB'};
+      var objectC = {info: 'objectC'};
+
+      mainModule.bind('a', function(){ return  objectA; });
+      mainModule.bind('b', function(){ return  objectB; });
+      mainModule.bind('c', function(){ return  objectC; });
+   
+      var container = new Container();
+
+      container.load([mainModule]);
+
+      container.get(function(err, a, b, c){
+      
+          try{
+             assert.equal(a, objectA);
+             assert.equal(b, objectB);
+             assert.equal(c, objectC);
+             done();
+          }
+          catch(ex){
+          
+             done(ex);
+          }
+      });
+
+
+   });
+
+   it('should resolve many dependencies level', function(done){
+   
+
+      var mainModule = new Module();
+
+      mainModule.bind('a', function(b){ return  b * 10; });
+      mainModule.bind('b', function(c){ return  c * 2; });
+      mainModule.bind('c', function(){ return  5; });
+      mainModule.bind('x', function(a, b, c){ return  a + b + c; });
+   
+      var container = new Container();
+
+      container.load([mainModule]);
+
+      container.get(function(err, a, x){
+      
+          try{
+             assert.equal(a, 100);
+             assert.equal(x, 115);
+             done();
+          }
+          catch(ex){
+          
+             done(ex);
+          }
+      });
+
+
+   });
 
    it('should resolve promise based factory', function(done){
    
@@ -136,7 +230,7 @@ describe('shark-di tests', function(){
    });
 
 
-   it('should fill "err" parameter when promised reject.', function(done){
+   it('should fill "err" parameter when promise reject.', function(done){
    
 
       var mainModule = new Module();
