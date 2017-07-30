@@ -1,86 +1,54 @@
 # node-shark-di
-Easy to use DI container for node.
+Easy to use, non-intrusive and friendly dependency-injection (DI) container for node.
 
-## First: Create a shark-di module
-```javascript 
-   // my-module.js
-    const di = require('shark-di');
-    const Module = di.Module;
+## NPM Install
 
-
-    var main = new Module();
-
-    main.bind('db', function(){
-
-        return function(){
-             return {name: 'white shark'}; 
-        };
-
-    });
-
-    main.bind('repository', function(db){
-
-         return function(id){
-               var data = db();
-               data.id = id;
-               return data;
-         };
-    });
-
-    exports = module.exports = main;
+```bash
+    $ npm install shark-di --save-dev
 ```
-## Second: Create a shark-di Container and load your Modules
-```javascript 
-    // di.js
-    const Container = require('shark-di').Container;
-    const mainModule = require('./my-module.js');
 
-    var container = new Container();
+## Basic Usage
 
-    container.load([mainModule]);
+You can get the complete sample here [node-shark-di-sample](https://github.com/gabrielpeixinho/node-shark-di-sample)
 
-    exports = module.exports = container;
-```
-## Third: Require your container
-```javascript 
-    // index.js
-    const container = require('./di.js');
+```javascript
 
-    container.get(function(err, repository){
+    const container = require('shark-di').BootstrapContainer;
 
+    // weapon factory
+    function sword(){
+        return {name: 'sword', damage: 2.5};
+    }
+
+    // warrior constructor
+    function ninja(weapon) {
+        this.weapon = weapon;
+        this.attack = function(){
+            console.log('attack using ' + this.weapon.name + ': ' + this.weapon.damage + ' damage');
+        } 
+    }
+
+    container.bind('weapon', sword); 
+    container.bindClass('warrior', ninja);
+
+    container.get(function(err, warrior){
+
+        if(err)
         console.log(err);
-        console.log(repository(0));
+        else
+        warrior.attack();
 
     });
 ```
 
-## Bind class
-
-```javascript 
-
-    function Repository(db){
-        this.db = db; 
-    }
-
-    Repository.prototype = {
-       get: function(id){
-         var db = this.db; 
-         var data = db();
-         data.id = id;
-         return data;
-       } 
-    }
-
-    main.bindClass('repository', Repository);
-
-```
 
 ## Promise based factories
+
 Just return a [promise/A+](https://promisesaplus.com/) in your factory.
 
 ```javascript
  
-    main.bind('db', function(){
+    container.bind('weapon', function(){
 
         return promise_a_plus;
 
@@ -88,14 +56,15 @@ Just return a [promise/A+](https://promisesaplus.com/) in your factory.
 ```
 
 Sample using RSVP Promise/A+ Library
+
 ```javascript
     
     const RSVP = require('rsvp');
     
-    main.bind('db', function(){
+    container.bind('weapon', function(){
 
         return new RSVP.Promise(function(resolve, reject){
-             resolve({name: 'white shark'}); 
+             resolve({name: 'shuriken',  damage: 1.0}); 
         });
 
     });
