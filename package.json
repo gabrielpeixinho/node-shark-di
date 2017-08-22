@@ -1,7 +1,7 @@
 {
   "name": "shark-di",
   "version": "0.3.2",
-  "description": "easy to use DI container",
+  "description": "Easy to use, non-intrusive and friendly dependency-injection (DI) container for node.",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
