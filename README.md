@@ -4,7 +4,7 @@ Easy to use, non-intrusive and friendly dependency-injection (DI) container for 
 ## NPM Install
 
 ```bash
-    $ npm install shark-di --save-dev
+    $ npm install shark-di --save
 ```
 
 ## Basic Usage
