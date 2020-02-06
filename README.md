@@ -1,7 +1,12 @@
 # node-shark-di
 Easy to use, non-intrusive and friendly dependency-injection (DI) container for node.
 
-## NPM Install
+## NPM Install globally
+
+```bash
+    $ npm install -g shark-di
+```
+## NPM Install only project
 
 ```bash
     $ npm install shark-di --save
